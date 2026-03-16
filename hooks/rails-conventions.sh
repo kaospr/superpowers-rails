@@ -101,7 +101,7 @@ if [[ "$file_path" == */app/views/*.erb ]]; then
   exit 0
 fi
 
-# Check if this is a Rails helper file (prohibited - should migrate to ViewComponents)
+# Check if this is a Rails helper file (prohibited - should migrate to Phlex components)
 if [[ "$file_path" == */app/helpers/*.rb ]]; then
   if skill_loaded "superpowers:rails-view-conventions"; then
     allow_with_skill "superpowers:rails-view-conventions" "helper"
@@ -111,18 +111,18 @@ if [[ "$file_path" == */app/helpers/*.rb ]]; then
   exit 0
 fi
 
-# Check if this is a ViewComponent file (Ruby, not Stimulus JS)
-if [[ "$file_path" == */app/components/*.rb ]] && [[ "$file_path" != *_controller.js ]]; then
+# Check if this is a Phlex component file (Ruby, not Stimulus JS)
+if [[ "$file_path" == */app/views/components/*.rb ]] && [[ "$file_path" != *_controller.js ]]; then
   if skill_loaded "superpowers:rails-view-conventions"; then
-    allow_with_skill "superpowers:rails-view-conventions" "ViewComponent"
+    allow_with_skill "superpowers:rails-view-conventions" "Phlex component"
   else
-    deny_without_skill "superpowers:rails-view-conventions" "ViewComponent"
+    deny_without_skill "superpowers:rails-view-conventions" "Phlex component"
   fi
   exit 0
 fi
 
 # Check if this is a Stimulus controller file
-if [[ "$file_path" == */app/components/*_controller.js ]] || [[ "$file_path" == */app/packs/controllers/*_controller.js ]]; then
+if [[ "$file_path" == */app/views/components/*_controller.js ]] || [[ "$file_path" == */app/packs/controllers/*_controller.js ]]; then
   if skill_loaded "superpowers:rails-stimulus-conventions"; then
     allow_with_skill "superpowers:rails-stimulus-conventions" "Stimulus controller"
   else
@@ -161,12 +161,12 @@ if [[ "$file_path" == */db/migrate/*.rb ]]; then
   exit 0
 fi
 
-# Check if this is a spec file
-if [[ "$file_path" == */spec/*.rb ]]; then
+# Check if this is a test file
+if [[ "$file_path" == */test/*.rb ]] || [[ "$file_path" == */spec/*.rb ]]; then
   if skill_loaded "superpowers:rails-testing-conventions"; then
-    allow_with_skill "superpowers:rails-testing-conventions" "spec"
+    allow_with_skill "superpowers:rails-testing-conventions" "test"
   else
-    deny_without_skill "superpowers:rails-testing-conventions" "spec"
+    deny_without_skill "superpowers:rails-testing-conventions" "test"
   fi
   exit 0
 fi

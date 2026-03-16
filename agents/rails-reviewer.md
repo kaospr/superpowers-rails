@@ -27,7 +27,7 @@ Before checking individual files, look for patterns that span multiple files:
 
 **Message Passing OOP** - The #1 convention across this project. Are controllers, views, or components reaching into object associations instead of asking the object? Look for `.where(...)`, `.exists?(...)`, `.find_by(...)` on associations outside the owning model.
 
-**Logic in the Right Layer** - Business logic in models (not controllers, jobs, or views)? Presentation logic in ViewComponents (not helpers or ERB)? Permissions in policies (not controllers)? Jobs thin and delegating to models?
+**Logic in the Right Layer** - Business logic in models (not controllers, jobs, or views)? Presentation logic in Phlex components (not helpers or ERB)? Permissions in policies (not controllers)? Jobs thin and delegating to models?
 
 **Turbo-First** - Any JSON API patterns or manual fetch calls where Turbo Frames/Streams should be used instead?
 
@@ -55,8 +55,8 @@ For each changed file, check against its corresponding convention skill:
 - No N+1 queries - use `includes`, `counter_cache`, `eager_load`
 - Callbacks used sparingly, never for external side effects
 
-**Views/Components** (`app/views/`, `app/components/`)
-- ViewComponents for all presentation logic - no custom helpers (`app/helpers/` is prohibited)
+**Views/Components** (`app/views/`, `app/views/components/`)
+- Phlex components for all presentation logic - no custom helpers (`app/helpers/` is prohibited)
 - Message passing - ask models, don't reach into associations
 - Don't duplicate model logic - if `Task#requires_review?` exists, use it; don't reimplement
 - Turbo frames for dynamic updates, not JSON APIs
@@ -84,21 +84,21 @@ For each changed file, check against its corresponding convention skill:
 - Proper column types: `decimal` for money (never float), `jsonb` not `json`, `boolean` not string
 - Safe operations for large tables: concurrent indexes, multi-step column removal
 
-**Stimulus** (`app/components/`, `app/packs/controllers/`)
+**Stimulus** (`app/views/components/`, `app/packs/controllers/`)
 - Thin - DOM interaction only, no business logic or data transformation
 - Turbo-first - if it can be done server-side with Turbo, don't do it in JS
 - Cleanup in `disconnect()` for everything created in `connect()`
 - Use `static targets` and `static values`, not query selectors
 - Event handlers named `handle*`
 
-**Tests** (`spec/`)
+**Tests** (`test/`)
 - Never test mocked behavior - if you mock it, you're not testing it
-- No mocks in integration tests (request/system specs) - WebMock for external APIs only
+- No mocks in integration tests (request/system tests) - WebMock for external APIs only
 - Explicit factory attributes - `create(:company_user, role: :mentor)` not `create(:user)`
-- Authorization tests in policy specs, NOT request specs
+- Authorization tests in policy tests, NOT request tests
 - Pristine test output - capture and verify expected errors
-- No `sleep` in system specs - use Capybara's waiting matchers
-- `let` by default, `let!` only when record must exist before test runs
+- No `sleep` in system tests - use Capybara's waiting matchers
+- `setup` method for shared fixtures, create only what each test needs
 
 ### 3. Classify Issues by Severity
 
@@ -115,7 +115,7 @@ For each changed file, check against its corresponding convention skill:
 - Fat controllers with business logic
 - Logic in the wrong layer (business logic in views, presentation in models)
 - Leaking implementation details (association reaching instead of message passing)
-- Custom helpers instead of ViewComponents
+- Custom helpers instead of Phlex components
 - State checks in policies
 - Non-thin jobs with inline business logic
 - Duplicating model logic in components
@@ -124,7 +124,7 @@ For each changed file, check against its corresponding convention skill:
 - Model organization order (constants/associations/validations/etc.)
 - Naming conventions (handle* for Stimulus events)
 - Could use counter_cache instead of .count
-- `let!` used where `let` would suffice
+- `setup` method doing too much — create only what each test needs
 - Factory without explicit traits where traits exist
 
 ### 4. Provide Actionable Recommendations

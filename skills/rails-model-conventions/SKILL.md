@@ -69,6 +69,6 @@ Order: constants → associations → validations → scopes → callbacks → p
 2. **Leaking implementation** - Provide clean interface methods
 3. **Callback hell** - Prefer explicit method calls
 4. **N+1 queries** - Use counter_cache, includes, eager loading
-5. **View logic in models** - Display formatting belongs in ViewComponents
+5. **View logic in models** - Display formatting belongs in Phlex components
 
 **Remember:** Models are the domain. Rich interfaces, hidden implementation.
