@@ -5,6 +5,8 @@ description: Use when creating or modifying Rails views, partials, or Phlex comp
 
 # Rails View Conventions
 
+**Before making any changes**, check if `DESIGN.md` exists in the project root. If it does, read it — it contains project design guides (colors, typography, spacing, component styles) that must be followed.
+
 Views are dumb templates. Presentation logic lives in Phlex components, domain logic lives in models.
 
 ## Core Principles

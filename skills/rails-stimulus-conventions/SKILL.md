@@ -5,6 +5,8 @@ description: Use when creating or modifying Stimulus controllers in app/componen
 
 # Rails Stimulus Conventions
 
+**Before making any changes**, check if `DESIGN.md` exists in the project root. If it does, read it — it contains project design guides that may affect client-side behavior and interaction patterns.
+
 The best Stimulus controller is one you don't write because Turbo handles it. When JS is needed, keep it thin — DOM interaction only.
 
 ## Core Principles
