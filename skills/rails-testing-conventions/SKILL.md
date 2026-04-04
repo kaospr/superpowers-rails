@@ -16,6 +16,34 @@ Tests verify behavior, not implementation. Real data, real objects, pristine out
 5. **Coverage cannot decrease** - Never delete a failing test, fix the root cause
 6. **System tests test through the UI** - Every user action must use Capybara interactions, never direct model/controller calls
 
+## Coverage with Undercover
+
+Use the `undercover` gem to check that new/changed code has test coverage.
+
+**Setup:**
+- Add `simplecov` and `undercover` to the test group in Gemfile
+- Add `SimpleCov.start` at the top of `test_helper.rb` (before any application code loads)
+- Add `bundle exec undercover` to `bin/ci`
+
+```ruby
+# Gemfile
+group :test do
+  gem "simplecov"
+  gem "undercover"
+end
+
+# test/test_helper.rb (must be first lines)
+require "simplecov"
+SimpleCov.start "rails"
+```
+
+```bash
+# bin/ci (include as a step)
+bundle exec undercover
+```
+
+**Non-negotiable:** Coverage checks must be part of `bin/ci`. Never skip them.
+
 ## Test Types
 
 | Type | Location | Use For |
@@ -70,6 +98,7 @@ end
 | `setup` for shared fixtures | Create objects inline everywhere |
 | Capture expected errors | Let errors pollute output |
 | Wait for elements | Use `sleep` |
+| Run undercover in bin/ci | Skip coverage checks |
 | Assert content in index tests | Only check HTTP status |
 | Click/fill/navigate in system tests | Replace user actions with model calls |
 | `accept_confirm { click_button }` | Skip confirmation dialogs |

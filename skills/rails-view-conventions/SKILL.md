@@ -14,7 +14,7 @@ Views are dumb templates. Presentation logic lives in Phlex components, domain l
 1. **Hotwire/Turbo** - Turbo frames for dynamic updates, never JSON APIs
 2. **Phlex components for logic** - All presentation logic in components, NOT helpers
 3. **No custom helpers** - `app/helpers/` is prohibited. Use Phlex components instead
-4. **Dumb views** - No complex logic in ERB. Delegate to models or components
+4. **No ERB files** - ALL views must be Phlex components. Never create `.html.erb` files
 5. **Stimulus for JS** - All JavaScript through Stimulus controllers
 6. **Don't duplicate model logic** - Delegate to model methods, don't reimplement
 
@@ -68,12 +68,16 @@ All styling via Tailwind CSS v4 utility classes:
 
 Ask models, don't reach into their internals (see `rails-model-conventions` for the full pattern):
 
-```erb
-<%# WRONG - reaching into associations %>
-<% if current_user.bookmarks.exists?(academy: academy) %>
+```ruby
+# WRONG - reaching into associations
+def view_template
+  if current_user.bookmarks.exists?(academy: academy)
+end
 
-<%# RIGHT - ask the model %>
-<% if current_user.bookmarked?(academy) %>
+# RIGHT - ask the model
+def view_template
+  if current_user.bookmarked?(academy)
+end
 ```
 
 ## Forms
@@ -92,6 +96,7 @@ Ask models, don't reach into their internals (see `rails-model-conventions` for 
 | Stimulus for JS behavior | Inline JavaScript |
 | Partials for simple markup | Duplicated markup |
 | Phlex components for logic | Custom helpers |
+| Phlex views for everything | Creating `.html.erb` files |
 | Tailwind utility classes | Custom CSS or inline styles |
 
 ## Common Mistakes
@@ -102,5 +107,6 @@ Ask models, don't reach into their internals (see `rails-model-conventions` for 
 4. **Inline JavaScript** - Use Stimulus controllers
 5. **JSON API calls** - Use Turbo frames/streams
 6. **Duplicating model logic** - Delegate to model methods, don't reimplement
+7. **Creating `.html.erb` files** - All views must be Phlex. ERB is never acceptable
 
 **Remember:** Views render. Phlex components present. Models decide.
